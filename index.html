@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Model Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        form {
+            max-width: 600px;
+            margin: auto;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 15px;
+            background-color: #007BFF;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .output {
+            max-width: 600px;
+            margin: auto;
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .output h2 {
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Car Model Finder</h1>
+<p>Enter the specifications below to find a matching car model.</p>
+
+<form id="carModelForm">
+    <h2>Mechanical Features</h2>
+
+    <div class="form-group">
+        <label for="length">Length (mm):</label>
+        <input type="number" id="length" name="length" placeholder="Enter length in mm" required>
+    </div>
+
+    <div class="form-group">
+        <label for="breadth">Breadth (mm):</label>
+        <input type="number" id="breadth" name="breadth" placeholder="Enter breadth in mm" required>
+    </div>
+
+    <div class="form-group">
+        <label for="height">Height (mm):</label>
+        <input type="number" id="height" name="height" placeholder="Enter height in mm" required>
+    </div>
+
+    <div class="form-group">
+        <label for="kerbWeight">Kerb Weight (kg):</label>
+        <input type="number" id="kerbWeight" name="kerbWeight" placeholder="Enter kerb weight in kg" required>
+    </div>
+
+    <h2>Electrical Features</h2>
+
+    <div class="form-group">
+        <label for="motorPower">Motor Power (kW):</label>
+        <input type="number" id="motorPower" name="motorPower" placeholder="Enter motor power in kW" required>
+    </div>
+
+    <div class="form-group">
+        <label for="batteryCapacity">Battery Capacity (kWh):</label>
+        <input type="number" id="batteryCapacity" name="batteryCapacity" placeholder="Enter battery capacity in kWh" required>
+    </div>
+
+    <button type="submit">Submit</button>
+</form>
+
+<div id="output" class="output" style="display: none;">
+    <h2>Matching Car Model</h2>
+    <p id="outputModel">No matching car model found.</p>
+</div>
+
+<script>
+    // Predefined dataset of car models
+    const carModels = [
+    {
+        model: "Tesla Model 3",
+        length: 4694,
+        breadth: 1850,
+        height: 1443,
+        kerbWeight: 1610,
+        motorPower: 283,
+        batteryCapacity: 82
+    },
+    {
+        model: "Hyundai Kona Electric",
+        length: 4180,
+        breadth: 1800,
+        height: 1570,
+        kerbWeight: 1685,
+        motorPower: 150,
+        batteryCapacity: 64
+    },
+    {
+        model: "Nissan Leaf",
+        length: 4490,
+        breadth: 1788,
+        height: 1540,
+        kerbWeight: 1580,
+        motorPower: 110,
+        batteryCapacity: 40
+    }
+];
+
+
+
+    document.getElementById('carModelForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const formData = new FormData(event.target);
+        const userSpecs = Object.fromEntries(formData.entries());
+
+        // Convert inputs to numbers
+        for (let key in userSpecs) {
+            userSpecs[key] = parseFloat(userSpecs[key]);
+        }
+
+        // Find a matching car model
+        const matchingCar = carModels.find(car =>
+            car.length === userSpecs.length &&
+            car.breadth === userSpecs.breadth &&
+            car.height === userSpecs.height &&
+            car.kerbWeight === userSpecs.kerbWeight &&
+            car.motorPower === userSpecs.motorPower &&
+            car.batteryCapacity === userSpecs.batteryCapacity
+        );
+
+        const output = document.getElementById('output');
+        const outputModel = document.getElementById('outputModel');
+
+        if (matchingCar) {
+            outputModel.textContent = `Model: ${matchingCar.model}`;
+        } else {
+            outputModel.textContent = "No matching car model found.";
+        }
+
+        output.style.display = 'block';
+    });
+</script>
+
+</body>
+</html>
